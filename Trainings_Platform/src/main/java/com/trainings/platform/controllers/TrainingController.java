@@ -34,8 +34,9 @@ public class TrainingController {
 	}
 	
 	@PostMapping("/gestiontraining")
-	public ResponseEntity<Training> createActualite(@RequestBody Training training) {
+	public ResponseEntity<Training> createTraining(@RequestBody Training training) {
 		try {
+			
 			Training _training = trainingRepository.save(training) ;
 			return new ResponseEntity<>(_training, HttpStatus.CREATED);
 		} catch (Exception e) {
