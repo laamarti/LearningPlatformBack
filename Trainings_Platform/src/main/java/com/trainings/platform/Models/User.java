@@ -30,6 +30,22 @@ public class User {
 	@NotBlank
 	private String username;
 	
+	@Column
+	private String phone;
+	
+	
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(	name = "user_roles", 
+				joinColumns = @JoinColumn(name = "user_id"), 
+				inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private Set<Role> roles = new HashSet<>();
+	
+	
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	@JoinColumn(name = "id_role",referencedColumnName = "id")
+//	private Role role;
+	
+	
 	public String getUsername() {
 		return username;
 	}
@@ -50,16 +66,6 @@ public class User {
 
 	@Column
 	private String password;
-	
-//	@ManyToOne(fetch = FetchType.LAZY)
-//	@JoinColumn(name = "id_role",referencedColumnName = "id")
-//	private Role role;
-	
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(	name = "user_roles", 
-				joinColumns = @JoinColumn(name = "user_id"), 
-				inverseJoinColumns = @JoinColumn(name = "role_id"))
-	private Set<Role> roles = new HashSet<>();
 
 	public Long getId() {
 		return id;
