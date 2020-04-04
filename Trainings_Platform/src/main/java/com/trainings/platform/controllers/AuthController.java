@@ -22,10 +22,15 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import com.trainings.platform.Models.Beneficiary;
 import com.trainings.platform.Models.ERole;
 import com.trainings.platform.Models.Role;
+import com.trainings.platform.Models.Trainer;
 import com.trainings.platform.Models.User;
+import com.trainings.platform.Repository.BeneficiaryRepository;
 import com.trainings.platform.Repository.RoleRepository;
+import com.trainings.platform.Repository.TrainerRepository;
+import com.trainings.platform.Repository.TrainingRepository;
 import com.trainings.platform.Repository.UserRepository;
 import com.trainings.platform.payload.request.LoginRequest;
 import com.trainings.platform.payload.request.SignupRequest;
@@ -46,6 +51,11 @@ public class AuthController {
 
 //	@Autowired
 //	RoleRepository roleRepository;
+	@Autowired
+	BeneficiaryRepository benRepository;
+	
+	@Autowired
+	TrainerRepository trainerRepository;
 
 	@Autowired
 	PasswordEncoder encoder;
@@ -96,10 +106,23 @@ public class AuthController {
 					.badRequest()
 					.body(new MessageResponse("Error: Email is already in use!"));
 		}
-		User user = new User(signUpRequest.getFirstName(), signUpRequest.getLastName(), signUpRequest.getEmail(), signUpRequest.getUsername(), signUpRequest.getPhone(), signUpRequest.getRole(), encoder.encode(signUpRequest.getPassword()));
-		userRepository.save(user);
-		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
-	}
+		
+		if(signUpRequest.getRole().equals("ROLE_BENEFICIARE")) {
+			Beneficiary user = new Beneficiary(signUpRequest.getFirstName(), signUpRequest.getLastName(), signUpRequest.getEmail(), signUpRequest.getUsername(), signUpRequest.getPhone(), signUpRequest.getRole(), encoder.encode(signUpRequest.getPassword()));
+			benRepository.save(user);
+			return ResponseEntity.ok(new MessageResponse("ben registered successfully!"));	
+		}
+		if(signUpRequest.getRole().equals("ROLE_FORMATEUR")) {
+			Trainer user = new Trainer(signUpRequest.getFirstName(), signUpRequest.getLastName(), signUpRequest.getEmail(), signUpRequest.getUsername(), signUpRequest.getPhone(), signUpRequest.getRole(), encoder.encode(signUpRequest.getPassword()),null);
+			trainerRepository.save(user);
+			return ResponseEntity.ok(new MessageResponse("ben registered successfully!"));	
+		}
+		else {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("Error:!"));
+		}
+		}
 		
 		// Create new user's account
 //		User user = new User(signUpRequest.getUsername(), 

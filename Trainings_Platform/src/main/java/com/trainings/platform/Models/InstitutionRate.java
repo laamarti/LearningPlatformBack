@@ -16,13 +16,17 @@ public class InstitutionRate {
 	private Long id;
 	
 	@Column
-	private String type;
-	
-	@Column
-	private int rate;
-	
-	@Column
 	private String institutionName;
+	
+	@Column
+	private float workspace;
+	
+	@Column
+	private float property;
+	
+	@Column
+	private float equipment;
+	
 
 	public Long getId() {
 		return id;
@@ -32,22 +36,6 @@ public class InstitutionRate {
 		this.id = id;
 	}
 
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	public int getRate() {
-		return rate;
-	}
-
-	public void setRate(int rate) {
-		this.rate = rate;
-	}
-
 	public String getInstitutionName() {
 		return institutionName;
 	}
@@ -55,7 +43,32 @@ public class InstitutionRate {
 	public void setInstitutionName(String institutionName) {
 		this.institutionName = institutionName;
 	}
+
+	public float getWorkspace() {
+		return workspace;
+	}
+
+	public void setWorkspace(float workspace) {
+		this.workspace = workspace;
+	}
+
+	public float getProperty() {
+		return property;
+	}
+
+	public void setProperty(float property) {
+		this.property = property;
+	}
+
+	public float getEquipment() {
+		return equipment;
+	}
+
+	public void setEquipment(float equipment) {
+		this.equipment = equipment;
+	}
+
 	
-	
+
 	
 }

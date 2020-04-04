@@ -1,5 +1,6 @@
 package com.trainings.platform.controllers;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class BeneficiaryController {
 	BeneficiaryRepository beneficiaryRepository;
 	
 	@Autowired
-	UserRepository userRepository;
+	BeneficiaryRepository userRepository;
 	
 	
 	@GetMapping("/getbeneficiary/{id}")
@@ -47,7 +48,9 @@ System.out.println(id);
 	@PostMapping("/addElement")
 	public ResponseEntity<Beneficiary> addElement(@RequestBody Beneficiary beneficiary) {
 		try {
+			
 			beneficiaryRepository.save(beneficiary);
+			System.out.println(beneficiary.getElements());
 		return new ResponseEntity<>(beneficiary, HttpStatus.CREATED);
 	} catch (Exception e) {
 		return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);

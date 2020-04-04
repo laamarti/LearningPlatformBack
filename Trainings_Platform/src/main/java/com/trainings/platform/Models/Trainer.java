@@ -9,6 +9,8 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 
 @Entity
@@ -29,6 +31,24 @@ public class Trainer extends User {
 	public Trainer() {
 		
 	}
+	
+	
+	
+	public Trainer(String firstName, String lastName, @Email String email, @NotBlank String username, String phone,
+			String strRole, String password,File cv) {
+		super(firstName, lastName, email, username, phone, strRole, password);
+		this.cv= cv;
+		// TODO Auto-generated constructor stub
+	}
+
+
+
+	public Trainer(@NotBlank String username, @Email String email, String password, String strRole) {
+		super(username, email, password, strRole);
+		// TODO Auto-generated constructor stub
+	}
+
+
 
 	public File getCv() {
 		return cv;

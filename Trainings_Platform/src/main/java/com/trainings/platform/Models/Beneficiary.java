@@ -9,6 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 
 
@@ -20,7 +22,7 @@ import javax.persistence.ManyToMany;
 public class Beneficiary extends User{
 	
 	@ManyToMany(fetch=FetchType.EAGER)
-    @JoinTable(name = "ben_Training", 
+    @JoinTable(name = "ben_Element", 
     	joinColumns = @JoinColumn(name = "ben_id"), 
     	inverseJoinColumns = @JoinColumn(name = "Element_id"))
 	private Set<Element> Elements = new HashSet<>();
@@ -33,8 +35,17 @@ public class Beneficiary extends User{
 //	private Set<Training> Trainings = new HashSet<>();
 
 
-	public Beneficiary() {
+	public Beneficiary( String firstName, String lastName, String email,String username, String phone,
+			String strRole, String password) {
+		super(firstName,lastName,email,username,phone,strRole,password);
 	}
+	
+	
+
+	public Beneficiary() {
+	
+}
+
 
 
 	public Set<Element> getElements() {
