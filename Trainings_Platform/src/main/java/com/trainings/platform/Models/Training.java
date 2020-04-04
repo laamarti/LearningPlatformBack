@@ -18,6 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -65,11 +66,19 @@ public class Training {
 	@JoinColumn(name = "trainer_id", nullable = false)
 	private User trainer;
 	
-	@OneToMany(fetch = FetchType.EAGER)
-	@JoinTable(	name = "trainings_elements", 
-			joinColumns = @JoinColumn(name = "training_id"), 
-			inverseJoinColumns = @JoinColumn(name = "element_id"))
-	private Set<Element> elements = new HashSet<>();
+	//@JsonBackReference
+	@OneToMany(mappedBy = "training", fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
+    private Set<Element> elements;
+	
+//	@OneToMany(fetch = FetchType.EAGER)
+//	@JoinTable(	name = "trainings_elements", 
+//			joinColumns = @JoinColumn(name = "training_id"), 
+//			inverseJoinColumns = @JoinColumn(name = "element_id"))
+//	private Set<Element> elements = new HashSet<>();
+	
+//	@ManyToMany(mappedBy = "Trainings")
+//	private Set<Beneficiary> beneficiaries = new HashSet<>();
 	
 //	
 //	@OneToMany(mappedBy = "training", fetch = FetchType.LAZY,
@@ -173,6 +182,15 @@ public class Training {
 	}
 
 	
+//	public Set<Beneficiary> getBeneficiaries() {
+//		return beneficiaries;
+//	}
+//
+//
+//
+//	public void setBeneficiaries(Set<Beneficiary> beneficiaries) {
+//		this.beneficiaries = beneficiaries;
+//	}
 	
 	
 	

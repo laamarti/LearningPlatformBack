@@ -1,6 +1,7 @@
 package com.trainings.platform.Models;
 
 import java.sql.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -11,9 +12,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
 @Entity
@@ -36,12 +41,17 @@ public class Element {
 	@Column
 	private Date startingDate;
 	
+	
+	@ManyToMany(mappedBy = "Elements")
+	private Set<Beneficiary> beneficiaries = new HashSet<>();
+	
+	
 	public Element() {}
 	
-	
-//	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-//	@JoinColumn(name = "Training_id", nullable = false)
-//	private Training training;
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "Training_id", nullable = false)
+	private Training training;
 	
 	
 	
@@ -98,6 +108,21 @@ public class Element {
 		this.startingDate = startingDate;
 	}
 
+	public Set<Beneficiary> getBeneficiaries() {
+		return beneficiaries;
+	}
+
+	public void setBeneficiaries(Set<Beneficiary> beneficiaries) {
+		this.beneficiaries = beneficiaries;
+	}
+
+	public Training getTraining() {
+		return training;
+	}
+
+	public void setTraining(Training training) {
+		this.training = training;
+	}
 	
 	
 }

@@ -5,7 +5,9 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
+
 @Entity
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @Table(name = "users",
 		uniqueConstraints = { 
 		@UniqueConstraint(columnNames = "email"),
@@ -21,7 +23,7 @@ public class User {
 	private String firstName;
 	
 	@Column
-	private String Lastname;
+	private String lastName;
 	
 	@Column
 	@Email
@@ -34,11 +36,14 @@ public class User {
 	private String phone;
 	
 	
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(	name = "user_roles", 
-				joinColumns = @JoinColumn(name = "user_id"), 
-				inverseJoinColumns = @JoinColumn(name = "role_id"))
-	private Set<Role> roles = new HashSet<>();
+	@Enumerated(EnumType.STRING)
+    @Column(length = 60)
+    private ERole role;
+//	@ManyToMany(fetch = FetchType.EAGER)
+//	@JoinTable(	name = "user_roles", 
+//				joinColumns = @JoinColumn(name = "user_id"), 
+//				inverseJoinColumns = @JoinColumn(name = "role_id"))
+//	private Set<Role> roles = new HashSet<>();
 	
 	
 //	@ManyToOne(fetch = FetchType.LAZY)
@@ -49,12 +54,48 @@ public class User {
 	public String getUsername() {
 		return username;
 	}
+	
+	public User(String firstName, String lastName, @Email String email, @NotBlank String username, String phone,
+		String strRole, String password) {
+	this.firstName = firstName;
+	this.lastName = lastName;
+	this.email = email;
+	this.username = username;
+	this.phone = phone;
+	this.password = password;
+	switch (strRole) {
+	case "ROLE_ADMIN":
+		this.setRole(ERole.ROLE_ADMIN);
+		break;
+	case "ROLE_FORMATEUR":
+		this.setRole(ERole.ROLE_FORMATEUR);
+		break;
+	case "ROLE_BENEFICIARE":
+		this.setRole(ERole.ROLE_BENEFICIARE);
+		break;
+	default: 
+		this.setRole(ERole.ROLE_BENEFICIARE);
+}
+}
 
-	public User( @NotBlank String username,@Email String email, String password) {
+	public User( @NotBlank String username,@Email String email, String password,String strRole) {
 		super();
 		this.email = email;
 		this.username = username;
 		this.password = password;
+		switch (strRole) {
+		case "ROLE_ADMIN":
+			this.setRole(ERole.ROLE_ADMIN);
+			break;
+		case "ROLE_FORMATEUR":
+			this.setRole(ERole.ROLE_FORMATEUR);
+			break;
+		case "ROLE_BENEFICIARE":
+			this.setRole(ERole.ROLE_BENEFICIARE);
+			break;
+		default: 
+			this.setRole(ERole.ROLE_BENEFICIARE);
+	}
 	}
 	public User( ) {
 
@@ -83,14 +124,6 @@ public class User {
 		this.firstName = firstName;
 	}
 
-	public String getLastname() {
-		return Lastname;
-	}
-
-	public void setLastname(String lastname) {
-		Lastname = lastname;
-	}
-
 	public String getEmail() {
 		return email;
 	}
@@ -107,12 +140,37 @@ public class User {
 		this.password = password;
 	}
 
-	public Set<Role> getRoles() {
-		return roles;
+	public ERole getRole() {
+		return role;
 	}
 
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
+	public void setRole(ERole role) {
+		this.role = role;
 	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	
+	
+//	public Set<Role> getRoles() {
+//		return roles;
+//	}
+//
+//	public void setRoles(Set<Role> roles) {
+//		this.roles = roles;
+//	}
 	
 }

@@ -1,5 +1,6 @@
 package com.trainings.platform.security.services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,14 +26,16 @@ public class UserDetailsImpl implements UserDetails {
 
 	private String password;
 	
-	private Collection<? extends GrantedAuthority> authorities;
+	private GrantedAuthority authorities;
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return authorities;
+		List <GrantedAuthority> authority = new ArrayList<>();
+		authority.add(this.authorities);
+		return authority.stream().collect(Collectors.toList());
 	}
 	public UserDetailsImpl(Long id, String username, String email, String password,
-			Collection<? extends GrantedAuthority> authorities) {
+			GrantedAuthority authorities) {
 		this.id = id;
 		this.username = username;
 		this.email = email;
@@ -41,9 +44,7 @@ public class UserDetailsImpl implements UserDetails {
 	}
 	
 	public static UserDetailsImpl build(User user) {
-		List<GrantedAuthority> authorities = user.getRoles().stream()
-				.map(role -> new SimpleGrantedAuthority(role.getName().name()))
-				.collect(Collectors.toList());
+		GrantedAuthority authorities = new SimpleGrantedAuthority(user.getRole().name());
 
 		return new UserDetailsImpl(
 				user.getId(), 
