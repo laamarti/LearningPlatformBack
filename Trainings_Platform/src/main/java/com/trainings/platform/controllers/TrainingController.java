@@ -61,6 +61,7 @@ public class TrainingController {
 			_training.setEndingDate(training.getEndingDate());
 			_training.setHostInstitution(training.getHostInstitution());
 			_training.setHours(training.getHours());
+			_training.setPrice(training.getPrice());
 			_training.setMaxNumber(training.getMaxNumber());
 			_training.setMinNumber(training.getMinNumber());
 			_training.setName(training.getName());
