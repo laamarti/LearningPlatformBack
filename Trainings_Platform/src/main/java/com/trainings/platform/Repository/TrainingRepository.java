@@ -16,4 +16,6 @@ public interface TrainingRepository extends JpaRepository<Training,Long>{
 
 	Training findTrainingByNameContaining(String name);
 
+	List<Training> findByStartingDateBetween(Date todaysDate, Date futureDate);
+
 }

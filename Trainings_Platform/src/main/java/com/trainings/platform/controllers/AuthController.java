@@ -1,13 +1,7 @@
 package com.trainings.platform.controllers;
-
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
-
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,16 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-
 import com.trainings.platform.Models.Beneficiary;
-import com.trainings.platform.Models.ERole;
-import com.trainings.platform.Models.Role;
 import com.trainings.platform.Models.Trainer;
-import com.trainings.platform.Models.User;
 import com.trainings.platform.Repository.BeneficiaryRepository;
-import com.trainings.platform.Repository.RoleRepository;
 import com.trainings.platform.Repository.TrainerRepository;
-import com.trainings.platform.Repository.TrainingRepository;
 import com.trainings.platform.Repository.UserRepository;
 import com.trainings.platform.payload.request.LoginRequest;
 import com.trainings.platform.payload.request.SignupRequest;

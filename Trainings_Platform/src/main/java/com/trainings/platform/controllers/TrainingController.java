@@ -39,8 +39,10 @@ public class TrainingController {
 	//@PreAuthorize("hasRole('ROLE_FORMATEUR')")
 	List<Training> getAllTrainings(){
 		
-		return trainingRepository.findAll();
-
+//		 trainingRepository.findAll();
+		java.sql.Date todaysDate = new java.sql.Date(new java.util.Date().getTime());
+		java.sql.Date futureDate = TrainingController.addDays(todaysDate, 30);
+		return trainingRepository.findByStartingDateBetween(todaysDate,futureDate);
 	}
 	
 	@GetMapping("/alltrainings/{id}")
@@ -82,7 +84,7 @@ public class TrainingController {
 	@GetMapping("/alltrainings30")
 	List<Training> getAllNewTrainings(){
 		java.sql.Date todaysDate = new java.sql.Date(new java.util.Date().getTime());
-		java.sql.Date futureDate = this.addDays(todaysDate, 30);
+		java.sql.Date futureDate = TrainingController.addDays(todaysDate, 30);
 		List<Training> l =trainingRepository.findByStartingDateBefore(futureDate);
 		return trainingRepository.findByStartingDateBefore(futureDate);
 	}

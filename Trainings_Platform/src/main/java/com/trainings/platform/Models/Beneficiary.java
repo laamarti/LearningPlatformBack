@@ -9,8 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
+
 
 
 
@@ -54,7 +53,8 @@ public class Beneficiary extends User{
 
 
 	public void setElements(Set<Element> elements) {
-		Elements = elements;
+		for(Element e:elements)
+		Elements.add(e);
 	}
 
 

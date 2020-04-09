@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.trainings.platform.Models.InstitutionRate;
-import com.trainings.platform.Models.TrainerRate;
 import com.trainings.platform.Repository.InstitutionRateRepository;
 
 @CrossOrigin(origins = "*", maxAge = 3600)

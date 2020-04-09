@@ -1,6 +1,5 @@
 package com.trainings.platform.Models;
 
-import java.util.*;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
