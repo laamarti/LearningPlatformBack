@@ -86,7 +86,6 @@ public class TrainingController {
 		Trainer tr = new Trainer();
 		tr.setId(id);
 		List<Training> l =trainingRepository.findTrainingByTrainer(tr);
-		System.out.println(l);
 		return l;
 	}
 	

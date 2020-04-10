@@ -42,7 +42,6 @@ public class TrainerRateController {
 //	@PreAuthorize("hasRole('ROLE_FORMATEUR')")
 	public ResponseEntity<TrainerRate> rating(@RequestBody TrainerRate trate){
 		try {
-			
 			tRateRepository.save(trate);
 			return new ResponseEntity<>(trate, HttpStatus.CREATED);
 		}

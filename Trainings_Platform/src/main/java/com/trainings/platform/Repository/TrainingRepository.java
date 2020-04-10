@@ -2,6 +2,7 @@ package com.trainings.platform.Repository;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -20,5 +21,7 @@ public interface TrainingRepository extends JpaRepository<Training,Long>{
 	List<Training> findByStartingDateBetween(Date todaysDate, Date futureDate);
 
 	List<Training> findTrainingByTrainer(Trainer tr);
+
+	Training findTrainingById(long id);
 
 }

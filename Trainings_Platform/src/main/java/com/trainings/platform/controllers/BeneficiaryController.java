@@ -1,5 +1,6 @@
 package com.trainings.platform.controllers;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -19,10 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.trainings.platform.Models.Beneficiary;
 import com.trainings.platform.Models.Element;
+import com.trainings.platform.Models.Trainer;
 import com.trainings.platform.Models.Training;
 import com.trainings.platform.Models.User;
 import com.trainings.platform.Repository.BeneficiaryRepository;
 import com.trainings.platform.Repository.ElementRepository;
+import com.trainings.platform.Repository.TrainerRepository;
 import com.trainings.platform.Repository.TrainingRepository;
 
 
@@ -37,6 +40,9 @@ public class BeneficiaryController {
 	
 	@Autowired
 	TrainingRepository trainingRepository;
+	
+	@Autowired
+	TrainerRepository trainerRepository;
 	
 	@Autowired
 	ElementRepository elementRepository;
@@ -73,18 +79,52 @@ public class BeneficiaryController {
 		List<Training> t = new ArrayList<Training>();
 		List<Element> elements = elementRepository.findByBeneficiaries(b);
 		for(Element e:elements) {
-			Training tr = new Training();
-		if(!t.contains(e.getTraining()))
-			t.add(e.getTraining());
+		if(!t.contains(e.getTraining())) {
+			if(e.getTraining().getStartingDate().after(new Date(new java.util.Date().getTime()))) {
+				t.add(e.getTraining());
+			}
 		}
-		for(Training e:t) {
-			e.setElements(new HashSet<Element>());
+			
 		}
-		for(Element e:elements) {
+		for(Training tr:t) {
+			tr.setElements(new HashSet<Element>());
+		}
+		for(Element el:elements) {
 			Set<Element> set = new HashSet<Element>();
-			set = t.get(t.indexOf(e.getTraining())).getElements();
-			set.add(e);
-			t.get(t.indexOf(e.getTraining())).setElements(set);	
+			if(t.contains(el.getTraining())) {
+				set.addAll(el.getTraining().getElements());
+				set.add(el);
+				t.get(t.indexOf(el.getTraining())).setElements(set);
+			}
+		}
+		
+		return t;
+	}
+	
+	@GetMapping("/rateMesFormation/{id}")
+	public List<Training> rateTrainings(@PathVariable("id") long id) {
+		Beneficiary b = new Beneficiary();
+		b.setId(id);
+		List<Training> t = new ArrayList<Training>();
+		List<Element> elements = elementRepository.findByBeneficiaries(b);
+		for(Element e:elements) {
+		if(!t.contains(e.getTraining())) {
+			if(e.getTraining().getEndingDate().before(new Date(new java.util.Date().getTime()))) {
+				t.add(e.getTraining());
+			}
+		}
+			
+		}
+		for(Training tr:t) {
+			tr.setElements(new HashSet<Element>());
+		}
+		for(Element el:elements) {
+			Set<Element> set = new HashSet<Element>();
+			if(t.contains(el.getTraining())) {
+				set.addAll(el.getTraining().getElements());
+				set.add(el);
+				t.get(t.indexOf(el.getTraining())).setElements(set);
+			}
 		}
 		
 		return t;
@@ -92,7 +132,7 @@ public class BeneficiaryController {
 	
 	
 	@PostMapping("/suppElement/{id}")
-	public ResponseEntity<Beneficiary> addElement(@RequestBody Long elemid,@PathVariable("id") long id) {
+	public ResponseEntity<Beneficiary> suppElement(@RequestBody Long elemid,@PathVariable("id") long id) {
 		try {
 			Element element = new Element();
 			Optional<Beneficiary> b = beneficiaryRepository.findById(id);
@@ -103,6 +143,16 @@ public class BeneficiaryController {
 			b.get().getElements().remove(element);
 		beneficiaryRepository.save(b.get());
 		return new ResponseEntity<>( null,HttpStatus.CREATED);
+	} catch (Exception e) {
+		return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
+	}
+		}
+	
+	@GetMapping("/trainingTrainer/{id}")
+	public ResponseEntity<Long> trainertraining(@PathVariable("id") long id) {
+		try {
+			Long tr = trainerRepository.findTrainerByTraining(id);
+		return new ResponseEntity<>( tr,HttpStatus.CREATED);
 	} catch (Exception e) {
 		return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
 	}
