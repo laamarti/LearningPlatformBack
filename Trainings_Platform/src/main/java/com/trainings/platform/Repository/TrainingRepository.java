@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.trainings.platform.Models.Trainer;
 import com.trainings.platform.Models.Training;
 
 
@@ -17,5 +18,7 @@ public interface TrainingRepository extends JpaRepository<Training,Long>{
 	Training findTrainingByNameContaining(String name);
 
 	List<Training> findByStartingDateBetween(Date todaysDate, Date futureDate);
+
+	List<Training> findTrainingByTrainer(Trainer tr);
 
 }

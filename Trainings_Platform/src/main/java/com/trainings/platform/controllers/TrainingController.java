@@ -81,12 +81,13 @@ public class TrainingController {
 			return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
 		}
 	}
-	@GetMapping("/alltrainings30")
-	List<Training> getAllNewTrainings(){
-		java.sql.Date todaysDate = new java.sql.Date(new java.util.Date().getTime());
-		java.sql.Date futureDate = TrainingController.addDays(todaysDate, 30);
-		List<Training> l =trainingRepository.findByStartingDateBefore(futureDate);
-		return trainingRepository.findByStartingDateBefore(futureDate);
+	@GetMapping("/allMyTrainings/{id}")
+	List<Training> getAllNewTrainings(@PathVariable("id") Long id){
+		Trainer tr = new Trainer();
+		tr.setId(id);
+		List<Training> l =trainingRepository.findTrainingByTrainer(tr);
+		System.out.println(l);
+		return l;
 	}
 	
 	
