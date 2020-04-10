@@ -89,5 +89,23 @@ public class BeneficiaryController {
 		
 		return t;
 	}
+	
+	
+	@PostMapping("/suppElement/{id}")
+	public ResponseEntity<Beneficiary> addElement(@RequestBody Long elemid,@PathVariable("id") long id) {
+		try {
+			Element element = new Element();
+			Optional<Beneficiary> b = beneficiaryRepository.findById(id);
+			for(Element e:b.get().getElements()) {
+				if(e.getId().equals(elemid))
+					element= e;
+			}
+			b.get().getElements().remove(element);
+		beneficiaryRepository.save(b.get());
+		return new ResponseEntity<>( null,HttpStatus.CREATED);
+	} catch (Exception e) {
+		return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
+	}
+		}
 
 }
