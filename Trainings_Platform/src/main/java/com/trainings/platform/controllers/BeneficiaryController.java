@@ -1,7 +1,8 @@
 package com.trainings.platform.controllers;
 
-import java.sql.Date;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -70,7 +71,6 @@ public class BeneficiaryController {
 		return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
 	}
 		}
-	
 	
 	@GetMapping("/mesFormation/{id}")
 	public List<Training> myTrainings(@PathVariable("id") long id) {
@@ -147,7 +147,8 @@ public class BeneficiaryController {
 		return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
 	}
 		}
-	
+
+
 	@GetMapping("/trainingTrainer/{id}")
 	public ResponseEntity<Long> trainertraining(@PathVariable("id") long id) {
 		try {
