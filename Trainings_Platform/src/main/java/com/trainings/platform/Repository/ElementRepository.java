@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.trainings.platform.Models.Beneficiary;
 import com.trainings.platform.Models.Element;
+import com.trainings.platform.Models.Trainer;
 import com.trainings.platform.Models.Training;
 
 

@@ -3,6 +3,8 @@ package com.trainings.platform.controllers;
 import java.sql.Date;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -136,6 +138,24 @@ public class TrainingController {
 			return trainerRepository.findTrainerNameByTraining(id);
 		}
 		
+		@GetMapping("/countbens/{id}")
+		public float countbens(@PathVariable("id") long id) {
+			Set<Element> elements = elementRepository.findByTrainingId(id);
+			float avg = 0;
+			for(Element el:elements) {
+				avg+= el.getBeneficiaries().size();
+			}
+			avg = avg/elements.size();
 		
+			
+			return avg;
+		}
+		
+		@GetMapping("/declancher/{id}")
+		public void declanger(@PathVariable("id") long id) {
+		Optional<Training> training =	trainingRepository.findById(id);
+		training.get().setConfirmed(true);
+		trainingRepository.save(training.get());
+		}
 
 }
