@@ -45,7 +45,7 @@ public class TrainerController {
 	
 	
 	List<String> files = new ArrayList<String>();
-	   private final Path rootLocation = Paths.get("/Users/anaslaamarti");
+	   private final Path rootLocation = Paths.get("C:\\Users\\ALAA-EDINE\\Desktop\\angular\\LearningPlatformFront\\src\\assets");
 	   
 	@Autowired
 	TrainerRepository trainerRepository; 

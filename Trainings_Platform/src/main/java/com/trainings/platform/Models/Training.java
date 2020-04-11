@@ -72,7 +72,7 @@ public class Training {
 	
 	//@JsonBackReference
 	@OneToMany(mappedBy = "training", fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL)
+            cascade=CascadeType.REMOVE)
     private Set<Element> elements;
 	
 //	@OneToMany(fetch = FetchType.EAGER)

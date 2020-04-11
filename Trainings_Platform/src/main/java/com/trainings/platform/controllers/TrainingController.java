@@ -157,5 +157,19 @@ public class TrainingController {
 		training.get().setConfirmed(true);
 		trainingRepository.save(training.get());
 		}
-
+		@PostMapping("/modifier")
+		@PreAuthorize("hasRole('ROLE_FORMATEUR')")
+		public ResponseEntity<Training> modifierTraining(@RequestBody Training training) {
+			try {
+				Training t = new Training();
+				t.setId(training.getId());
+				for(Element e:training.getElements()) {
+					e.setTraining(t);
+					elementRepository.save(e);
+				}
+				return new ResponseEntity<>(training, HttpStatus.CREATED);
+			} catch (Exception e) {
+				return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
+			}
+		}
 }
