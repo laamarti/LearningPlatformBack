@@ -2,6 +2,8 @@ package com.trainings.platform.payload.request;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashSet;
+
 import com.trainings.platform.Models.User;
 import com.trainings.platform.Models.Element;
 

@@ -9,20 +9,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.trainings.platform.Models.Element;
 import com.trainings.platform.Models.Trainer;
 import com.trainings.platform.Models.Training;
 import com.trainings.platform.Repository.ElementRepository;
-import com.trainings.platform.Repository.TrainerRepository;
 import com.trainings.platform.Repository.TrainingRepository;
 import com.trainings.platform.payload.request.TrainingForm;
 
@@ -31,9 +28,6 @@ import com.trainings.platform.payload.request.TrainingForm;
 @RestController
 @RequestMapping("/api/training")
 public class TrainingController {
-	
-	@Autowired
-	TrainerRepository trainerRepository;
 	
 	@Autowired
 	TrainingRepository trainingRepository;
@@ -45,10 +39,8 @@ public class TrainingController {
 	//@PreAuthorize("hasRole('ROLE_FORMATEUR')")
 	List<Training> getAllTrainings(){
 		
-//		 trainingRepository.findAll();
-		java.sql.Date todaysDate = new java.sql.Date(new java.util.Date().getTime());
-		java.sql.Date futureDate = TrainingController.addDays(todaysDate, 30);
-		return trainingRepository.findByStartingDateBetween(todaysDate,futureDate);
+		return trainingRepository.findAll();
+
 	}
 	
 	@GetMapping("/alltrainings/{id}")
@@ -87,15 +79,14 @@ public class TrainingController {
 			return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
 		}
 	}
-	
-	@GetMapping("/allMyTrainings/{id}")
-	List<Training> getAllNewTrainings(@PathVariable("id") Long id){
-		Trainer tr = new Trainer();
-		tr.setId(id);
-		List<Training> l =trainingRepository.findTrainingByTrainer(tr);
-		System.out.println(l);
-		return l;
+	@GetMapping("/alltrainings30")
+	List<Training> getAllNewTrainings(){
+		java.sql.Date todaysDate = new java.sql.Date(new java.util.Date().getTime());
+		java.sql.Date futureDate = this.addDays(todaysDate, 30);
+		List<Training> l =trainingRepository.findByStartingDateBefore(futureDate);
+		return trainingRepository.findByStartingDateBefore(futureDate);
 	}
+	
 	
 	 public static Date addDays(Date date, int days) {
 	        Calendar c = Calendar.getInstance();
@@ -103,40 +94,5 @@ public class TrainingController {
 	        c.add(Calendar.DATE, days);
 	        return new Date(c.getTimeInMillis());
 	    }
-	 
-	 @GetMapping("/countTrainings")
-		public long countByTenantName() {
-			return  trainingRepository.count();
-		}
-
-		
-		@GetMapping("/countPrice")
-		public Float getForecastTotals() {
-		
-		    Float a = trainingRepository.selectTotals();
-			System.out.println(a);
-				return a;
-		}
-		
-		
-		@DeleteMapping("/alltrain/{id}")
-		public ResponseEntity<HttpStatus> deleteTraining(@PathVariable("id") long id) {
-		 try { 
-			
-			 trainingRepository.deleteById(id);
-				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-			} catch (Exception e) {
-				return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
-			}
-		}
-		
-		@GetMapping("/getTrainer/{id}")
-		@ResponseBody
-		String gettrainerfromTraining(@PathVariable("id") Long id){
-
-			return trainerRepository.findTrainerNameByTraining(id);
-		}
-		
-		
 
 }

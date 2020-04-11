@@ -1,6 +1,7 @@
 package com.trainings.platform.Models;
 
 import java.sql.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -15,15 +16,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 
 @Entity
 @Table(name="training")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler","trainer"})
-
 public class Training {
 
 	@Id
@@ -65,7 +63,7 @@ public class Training {
 //	@OneToMany(mappedBy = "training", fetch = FetchType.LAZY,
 //	            cascade = CascadeType.ALL)
 //	    private Set<Element> elements;
-	 
+	 @JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	@JoinColumn(name = "trainer_id", nullable = false)
 	private User trainer;
