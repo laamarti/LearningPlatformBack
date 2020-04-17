@@ -17,6 +17,8 @@ public class TrainingForm {
 	
 	private String hostInstitution;
 	
+	private String requirements;
+	
 	private int maxNumber;
 	
 	private int minNumber;
@@ -36,13 +38,14 @@ public class TrainingForm {
 	 
 	private User trainer;
 
-	public TrainingForm(String name, String description, String hostInstitution, int maxNumber, int minNumber, int price,
+	public TrainingForm(String name, String description, String hostInstitution, int maxNumber, int minNumber, int price,String trainingRequirements,
 			int hours, Date startingDate, Date endingDate, boolean isConfirmed, ArrayList<Element> elements,
 			User trainer) {
 		super();
 		this.name = name;
 		this.description = description;
 		this.hostInstitution = hostInstitution;
+		this.requirements = trainingRequirements;
 		this.maxNumber = maxNumber;
 		this.minNumber = minNumber;
 		this.price= price;
@@ -149,6 +152,14 @@ public class TrainingForm {
 	public void setPrice(int price) {
 		this.price = price;
 	}
-		
 
+	public String getRequirements() {
+		return requirements;
+	}
+
+	public void setRequirements(String trainingRequirements) {
+		requirements = trainingRequirements;
+	}
+		
+	
 }

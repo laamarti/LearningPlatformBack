@@ -15,7 +15,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
@@ -38,6 +37,9 @@ public class Training {
 	
 	@Column
 	private String hostInstitution;
+	
+	@Column
+	private String requirements;
 	
 	@Column
 	private int maxNumber;
@@ -193,6 +195,15 @@ public class Training {
 		this.price = price;
 	}
 
+	public String getRequirements() {
+		return requirements;
+	}
+
+	public void setRequirements(String trainingRequirements) {
+		this.requirements = trainingRequirements;
+	}
+	
+	
 	
 //	public Set<Beneficiary> getBeneficiaries() {
 //		return beneficiaries;

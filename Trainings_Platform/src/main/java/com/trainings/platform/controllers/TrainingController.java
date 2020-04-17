@@ -1,3 +1,4 @@
+
 package com.trainings.platform.controllers;
 
 import java.sql.Date;
@@ -70,6 +71,7 @@ public class TrainingController {
 			_training.setConfirmed(training.isConfirmed());
 			_training.setEndingDate(training.getEndingDate());
 			_training.setHostInstitution(training.getHostInstitution());
+			_training.setRequirements(training.getRequirements());
 			_training.setHours(training.getHours());
 			_training.setPrice(training.getPrice());
 			_training.setMaxNumber(training.getMaxNumber());
@@ -161,10 +163,14 @@ public class TrainingController {
 		@PreAuthorize("hasRole('ROLE_FORMATEUR')")
 		public ResponseEntity<Training> modifierTraining(@RequestBody Training training) {
 			try {
-				Training t = new Training();
-				t.setId(training.getId());
+				
+				Trainer t = new Trainer();
+				Long l = trainerRepository.findTrainerByTraining(training.getId());
+				t.setId(l);
+				training.setTrainer(t);
+				trainingRepository.save(training);
 				for(Element e:training.getElements()) {
-					e.setTraining(t);
+					e.setTraining(training);
 					elementRepository.save(e);
 				}
 				return new ResponseEntity<>(training, HttpStatus.CREATED);
