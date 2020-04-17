@@ -3,6 +3,7 @@ package com.trainings.platform.controllers;
 
 import java.sql.Date;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -125,8 +126,11 @@ public class TrainingController {
 		@DeleteMapping("/alltrain/{id}")
 		public ResponseEntity<HttpStatus> deleteTraining(@PathVariable("id") long id) {
 		 try { 
-			
-			 trainingRepository.deleteById(id);
+			Training tr = trainingRepository.findById(id).get();
+				for(Element e:tr.getElements()) {
+					elementRepository.deleteById(e.getId());
+				}
+				trainingRepository.deleteById(id);			 
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			} catch (Exception e) {
 				return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);

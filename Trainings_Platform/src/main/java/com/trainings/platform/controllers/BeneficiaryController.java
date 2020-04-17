@@ -2,6 +2,7 @@ package com.trainings.platform.controllers;
 
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -20,11 +21,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.trainings.platform.Models.Beneficiary;
+import com.trainings.platform.Models.CronJobTable;
 import com.trainings.platform.Models.Element;
 import com.trainings.platform.Models.Trainer;
 import com.trainings.platform.Models.Training;
 import com.trainings.platform.Models.User;
 import com.trainings.platform.Repository.BeneficiaryRepository;
+import com.trainings.platform.Repository.CronJobTableRepository;
 import com.trainings.platform.Repository.ElementRepository;
 import com.trainings.platform.Repository.TrainerRepository;
 import com.trainings.platform.Repository.TrainingRepository;
@@ -48,12 +51,12 @@ public class BeneficiaryController {
 	@Autowired
 	ElementRepository elementRepository;
 	
+	@Autowired
+	CronJobTableRepository CJTRepository;
+	
 	
 	@GetMapping("/getbeneficiary/{id}")
 	User getbeneficiarybyId(@PathVariable("id") long id){
-		System.out.println(id);
-		System.out.println(beneficiaryRepository.findAll().size());
-		
 		return beneficiaryRepository.findById(id).get();
 
 	}
@@ -65,7 +68,16 @@ public class BeneficiaryController {
 			Optional<Beneficiary> b = beneficiaryRepository.findById(beneficiary.getId());
 				beneficiary.setElements(b.get().getElements());
 			beneficiaryRepository.save(beneficiary);
-			System.out.println(beneficiary.getElements());
+			
+			for(Element e: beneficiary.getElements()) {
+				if(CJTRepository.getbyids(e.getId(), beneficiary.getId())==null) {
+					CronJobTable cjt = new CronJobTable();
+					cjt.setBenId(beneficiary.getId());
+					cjt.setElemId(e.getId());
+					cjt.setAdditionDate(new java.sql.Date(Calendar.getInstance().getTime().getTime()));
+					CJTRepository.save(cjt);
+				}
+			}
 		return new ResponseEntity<>(beneficiary, HttpStatus.CREATED);
 	} catch (Exception e) {
 		return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
@@ -142,6 +154,8 @@ public class BeneficiaryController {
 			}
 			b.get().getElements().remove(element);
 		beneficiaryRepository.save(b.get());
+		long idc = CJTRepository.getbyids(elemid,id);
+		CJTRepository.deleteById(idc);
 		return new ResponseEntity<>( null,HttpStatus.CREATED);
 	} catch (Exception e) {
 		return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
