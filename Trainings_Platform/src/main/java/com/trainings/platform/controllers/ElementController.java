@@ -23,6 +23,7 @@ import com.trainings.platform.Models.Element;
 import com.trainings.platform.Models.Trainer;
 import com.trainings.platform.Models.Training;
 import com.trainings.platform.Repository.ElementRepository;
+import com.trainings.platform.Repository.TrainingRepository;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -31,7 +32,8 @@ public class ElementController {
 	
 	@Autowired
 	ElementRepository elementRepository;
-	
+	@Autowired
+	TrainingRepository trainingRepository;
 	
 	@PostMapping("/addElement")
 	@PreAuthorize("hasRole('ROLE_FORMATEUR')")
@@ -66,5 +68,10 @@ public class ElementController {
 	}
 		}
 	
-
+	@GetMapping("/allelement")
+	List<Training> searchelememt(){
+		return trainingRepository.findAll();
+		
+	}
+	
 }
